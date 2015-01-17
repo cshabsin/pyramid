@@ -127,12 +127,17 @@ class AnagramFuzzHandler(object):
             truth = False
 
         if m.group(1) == "one":
-            return [w for w in words if anagram.AnagramDB.hasAnagramPlusOne(w) is truth]
+            return [w for w in words if anagram.AnagramDB.hasAnagramPlusOne(w) == truth]
         elif m.group(1) == "two":
-            return [w for w in words if anagram.AnagramDB.hasAnagramPlusTwo(w) is truth]
+            return [w for w in words if anagram.AnagramDB.hasAnagramPlusTwo(w) == truth]
         
 if __name__ == "main":
     print "foo"
 
-ALL_HANDLERS = [SHA1Handler, B26DivisibleHandler, B26FloatHandler, B26IntHandler, DistinctHandler, AnagramHandler, AnagramFuzzHandler]
+ALL_HANDLERS = {
+    2: [SHA1Handler],
+    3: [B26DivisibleHandler, B26FloatHandler, B26IntHandler],
+    4: [DistinctHandler],
+    100: [AnagramHandler, AnagramFuzzHandler]
+    }
 

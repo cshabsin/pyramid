@@ -418,4 +418,7 @@ class NonoverlappingHandler(object):
                  if util.value_matches(desc, best(word.upper(), wordSet), len(word))]
         return words
             
-ALL_HANDLERS = [QwertyHandler, NonoverlappingHandler]
+ALL_HANDLERS = {
+    11: [QwertyHandler],
+    99: [NonoverlappingHandler]
+    }

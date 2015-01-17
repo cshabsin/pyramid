@@ -33,9 +33,10 @@ class ContainsHandler(object):
         words = [word for word in words if val in word.upper()]
         return words
 
-
-ALL_HANDLERS = (
-    [ScrabbleHandler, ContainsHandler] +
-    cshabsin.ALL_HANDLERS +
-    jtwang.ALL_HANDLERS +
-    brianh.ALL_HANDLERS)
+from collections import defaultdict
+ALL_HANDLERS = defaultdict(list)
+ALL_HANDLERS[1] = [ContainsHandler]
+ALL_HANDLERS[10] = [ScrabbleHandler]
+for d in (cshabsin.ALL_HANDLERS, jtwang.ALL_HANDLERS, brianh.ALL_HANDLERS):
+    for (priority, handlers) in d.iteritems():
+        ALL_HANDLERS[priority].extend(handlers)

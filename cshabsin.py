@@ -151,5 +151,9 @@ class CharacterTypeHandler(object):
     
 
 
-ALL_HANDLERS = [LengthHandler, StartVowelHandler, SumLetterHandler, EndsWithHandler,
-                VowelHandler, DoubledLetterHandler, CharacterTypeHandler]
+ALL_HANDLERS = {
+    1: [LengthHandler, StartVowelHandler, EndsWithHandler],
+    2: [VowelHandler],
+    3: [SumLetterHandler],
+    10: [DoubledLetterHandler, CharacterTypeHandler]
+    }
