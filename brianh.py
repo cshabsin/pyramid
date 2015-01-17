@@ -27,7 +27,11 @@ NONOVERLAPPING_RE = re.compile(r"If you marked nonoverlapping (.*), you could ma
 class NonoverlappingHandler(object):
     @staticmethod
     def matches(line):
-        return NONOVERLAPPING_RE.match(line)
+        m = NONOVERLAPPING_RE.match(line)
+        if not m: return False
+        wordSetName = NONOVERLAPPING_RE.match(line).group(1)
+        return wordSetName in ["US state postal abbreviations",
+                               "chemical element symbols (atomic number 112 or below)"]
         
     @staticmethod
     def prune(line, words):
@@ -36,20 +40,131 @@ class NonoverlappingHandler(object):
         if wordSetName == "US state postal abbreviations":
             #Open question: DC, territories?
             wordSet = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
-        targetLength = len(wordSet[0])
-        def best(word, wordset, targetLength):
-            matches = 0
+        if wordSetName == "chemical element symbols (atomic number 112 or below)":
+            wordSet = ["H",
+                        "HE",
+                        "LI",
+                        "BE",
+                        "B",
+                        "C",
+                        "N",
+                        "O",
+                        "F",
+                        "NE",
+                        "NA",
+                        "MG",
+                        "AL",
+                        "SI",
+                        "P",
+                        "S",
+                        "CL",
+                        "AR",
+                        "K",
+                        "CA",
+                        "SC",
+                        "TI",
+                        "V",
+                        "CR",
+                        "MN",
+                        "FE",
+                        "CO",
+                        "NI",
+                        "CU",
+                        "ZN",
+                        "GA",
+                        "GE",
+                        "AS",
+                        "SE",
+                        "BR",
+                        "KR",
+                        "RB",
+                        "SR",
+                        "Y",
+                        "ZR",
+                        "NB",
+                        "MO",
+                        "TC",
+                        "RU",
+                        "RH",
+                        "PD",
+                        "AG",
+                        "CD",
+                        "IN",
+                        "SN",
+                        "SB",
+                        "TE",
+                        "I",
+                        "XE",
+                        "CS",
+                        "BA",
+                        "LA",
+                        "CE",
+                        "PR",
+                        "ND",
+                        "PM",
+                        "SM",
+                        "EU",
+                        "GD",
+                        "TB",
+                        "DY",
+                        "HO",
+                        "ER",
+                        "TM",
+                        "YB",
+                        "LU",
+                        "HF",
+                        "TA",
+                        "W",
+                        "RE",
+                        "OS",
+                        "IR",
+                        "PT",
+                        "AU",
+                        "HG",
+                        "TL",
+                        "PB",
+                        "BI",
+                        "PO",
+                        "AT",
+                        "RN",
+                        "FR",
+                        "RA",
+                        "AC",
+                        "TH",
+                        "PA",
+                        "U",
+                        "NP",
+                        "PU",
+                        "AM",
+                        "CM",
+                        "BK",
+                        "CF",
+                        "ES",
+                        "FM",
+                        "MD",
+                        "NO",
+                        "LR",
+                        "RF",
+                        "DB",
+                        "SG",
+                        "BH",
+                        "HS",
+                        "MT",
+                        "DS",
+                        "RG",
+                        "CN"]
+        def best(word, wordset):
             currentIndex = 0
-            while (currentIndex < len(word) - targetLength + 1):
-                if word[currentIndex:currentIndex + targetLength] in wordSet:
-                    matches += targetLength
-                    currentIndex += targetLength
+            while (currentIndex < len(word)):
+                matches = [target for target in wordset if word[currentIndex:].startswith(target)]
+                if len(matches) > 0:
+                    bestScore = 0
+                    return max([len(match) + best(word[currentIndex + len(match):], wordset) for match in matches])
                 else:
                     currentIndex += 1
-            
-            return matches
+            return 0
         words = [word for word in words
-                 if util.value_matches(desc, best(word.upper(), wordSet, targetLength), len(word))]
+                 if util.value_matches(desc, best(word.upper(), wordSet), len(word))]
         return words
             
 ALL_HANDLERS = [QwertyHandler, NonoverlappingHandler]
