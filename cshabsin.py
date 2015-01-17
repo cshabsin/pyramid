@@ -40,21 +40,35 @@ class StartVowelHandler(object):
         return words
 
 
-SUMLETTER_RE = re.compile(
+SUMLETTERDIV_RE = re.compile(
     r"Sum of letters \(A=1, B=2, etc\) is divisible by (\d*): (.*)")
+SUMLETTER_RE = re.compile(
+    r"Sum of letters \(A=1, B=2, etc\): (.*)")
 class SumLetterHandler(object):
     @staticmethod
     def matches(line):
-        return SUMLETTER_RE.match(line)
+        return (
+            SUMLETTERDIV_RE.match(line) or SUMLETTER_RE.match(line))
 
     @staticmethod
     def prune(line, words):
+        m = SUMLETTERDIV_RE.match(line)
+        if m:
+            modulo = int(m.group(1))
+            is_divisible = m.group(2) == "YES"
+            words = [word for word in words
+                     if (util.sum_of_letters_a1(word)%modulo == 0) == is_divisible]
+            return words
+
         m = SUMLETTER_RE.match(line)
-        modulo = int(m.group(1))
-        is_divisible = m.group(2) == "YES"
-        words = [word for word in words
-                 if (util.sum_of_letters_a1(word)%modulo == 0) == is_divisible]
-        return words
+        if m:
+            words = [word for word in words
+                     if util.value_matches(
+                             m.group(1), util.sum_of_letters_a1(word), len(word))]
+            return words
+
+        raise Exception("Whoa")
+                     
 
 
 ENDSWITH_RE = re.compile(r"Ends with: (.*)")
