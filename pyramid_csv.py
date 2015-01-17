@@ -6,6 +6,11 @@ import handlers
 import anagram
 import caesar
 
+previous = []
+with open("previous.csv", "r") as prevfile:
+    for line in prevfile:
+        previous.append(line.strip().split(","))
+
 with open("words.txt", "r") as wordfile:
     all_words = [line.strip() for line in wordfile]
 
@@ -25,6 +30,9 @@ def emit(output_str):
             
 for rownum in xrange(125):
   for colnum in xrange(142):
+    if previous[rownum][colnum]:
+        emit(previous[rownum][colnum] + ",")
+        continue
     filename = "row%d/row%d_col%d.txt" % (rownum, rownum, colnum)
     if not os.path.exists(filename):
         emit(",")
