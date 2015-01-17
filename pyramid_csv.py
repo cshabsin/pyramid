@@ -4,11 +4,13 @@ import sys
 
 import handlers
 import anagram
+import caesar
 
 with open("words.txt", "r") as wordfile:
     all_words = [line.strip() for line in wordfile]
 
 anagram.AnagramDB.init(all_words)
+caesar.CaesarHandler.init(all_words)
 
 def sorted_glob():
     for rownum in xrange(125):

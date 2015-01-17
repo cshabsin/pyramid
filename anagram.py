@@ -14,6 +14,8 @@ class AnagramDB(object):
 
     @staticmethod
     def init(wordlist):
+        if len(AnagramDB._charcounts) > 0:
+            return
         for w in wordlist:
             c = AnagramDB.charcount(w)
             AnagramDB._charcounts[c].append(w)

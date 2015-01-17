@@ -1,11 +1,13 @@
 import sys
 import handlers
 import anagram
+import caesar
 
 with open("words.txt", "r") as wordfile:
     words = [line.strip() for line in wordfile]
 
 anagram.AnagramDB.init(words)
+caesar.CaesarHandler.init(words)
 
 filename = sys.argv[1]
 with open(filename, 'r') as rulefile:

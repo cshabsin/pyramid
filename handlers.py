@@ -2,6 +2,7 @@ import re
 import cshabsin
 import jtwang
 import brianh
+import caesar
 import util
 
 SCRABBLE_RE = re.compile(r"Base Scrabble score: (.*)")
@@ -39,6 +40,7 @@ from collections import defaultdict
 ALL_HANDLERS = defaultdict(list)
 ALL_HANDLERS[1] = [ContainsHandler]
 ALL_HANDLERS[10] = [ScrabbleHandler]
+ALL_HANDLERS[30] = [caesar.CaesarHandler]
 for d in (cshabsin.ALL_HANDLERS, jtwang.ALL_HANDLERS, brianh.ALL_HANDLERS):
     for (priority, handlers) in d.iteritems():
         ALL_HANDLERS[priority].extend(handlers)
