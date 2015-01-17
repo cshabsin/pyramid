@@ -23,4 +23,21 @@ class LengthHandler(object):
         words = [word for word in words if len(word) >= l and len(word) <= h]
         return words
 
-ALL_HANDLERS = [LengthHandler]
+
+STARTVOWEL_RE = re.compile(r"Starts with a vowel: (.*)")
+class StartVowelHandler(object):
+    @staticmethod
+    def matches(line):
+        return STARTVOWEL_RE.match(line)
+
+    @staticmethod
+    def prune(line, words):
+        val = STARTVOWEL_RE.match(line).group(1) == "YES"
+        print val
+        def starts_with_vowel(word):
+            return word[0].upper() in "AEIOU"
+        words = [word for word in words if starts_with_vowel(word) == val]
+        return words
+    
+
+ALL_HANDLERS = [LengthHandler, StartVowelHandler]
