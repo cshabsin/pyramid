@@ -83,29 +83,28 @@ class DistinctHandler(object):
 
     @staticmethod
     def distinct_consonants(word):
-        return set([c for c in word.upper() if c not in DistinctHandler.vowels])
+        return set([c for c in word.lower() if c not in DistinctHandler.vowels])
 
     @staticmethod
     def distinct_vowels(word):
-        return set([c for c in word.upper() if c in DistinctHandler.vowels])
+        return set([c for c in word.lower() if c in DistinctHandler.vowels])
 
     @staticmethod
     def distinct_letters(word):
-        return set([c for c in word.upper()])
+        return set([c for c in word.lower()])
     
     @staticmethod
     def prune(rule, words):
         m = DISTINCT_RE.match(rule)
         condition = m.group(2)
         if m.group(1) == "consonants":
-            return [w for w in words
-                    if util.value_matches(condition, len(DistinctHandler.distinct_consonants(w)), len(w))]
+            func = DistinctHandler.distinct_consonants
         elif m.group(1) == "vowels":
-            return [w for w in words
-                    if util.value_matches(condition, len(DistinctHandler.distinct_vowels(w)), len(w))]
+            func = DistinctHandler.distinct_vowels
         elif m.group(1) == "letters":
-            return [w for w in words
-                    if util.value_matches(condition, len(DistinctHandler.distinct_letters(w)), len(w))]
+            func = DistinctHandler.distinct_letters
+
+        return [w for w in words if util.value_matches(condition, len(func(w)), len(w))]
 
 ANAGRAM_RE = re.compile(r"Has at least one anagram that is also in the word list: (\w+)")
 class AnagramHandler(object):
