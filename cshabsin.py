@@ -56,6 +56,18 @@ class SumLetterHandler(object):
                  if (util.sum_of_letters_a1(word)%modulo == 0) == is_divisible]
         return words
 
-    
 
-ALL_HANDLERS = [LengthHandler, StartVowelHandler, SumLetterHandler]
+ENDSWITH_RE = re.compile(r"Ends with: (.*)")
+class EndsWithHandler(object):
+    @staticmethod
+    def matches(line):
+        return ENDSWITH_RE.match(line)
+
+    @staticmethod
+    def prune(line, words):
+        val = ENDSWITH_RE.match(line).group(1)
+        words = [word for word in words if word.upper().endswith(val)]
+        return words
+
+
+ALL_HANDLERS = [LengthHandler, StartVowelHandler, SumLetterHandler, EndsWithHandler]
