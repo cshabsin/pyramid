@@ -118,15 +118,16 @@ class DoubledLetterHandler(object):
 
 
 CHARACTER_TYPE_RE = re.compile(r"Most common (.*) each account\(s\) for: (.*)")
+CHARACTER_TYPE2_RE = re.compile(r"Most common (.*) each appear\(s\): (.*)")
 
 class CharacterTypeHandler(object):
     @staticmethod
     def matches(line):
-        return CHARACTER_TYPE_RE.match(line)
+        return CHARACTER_TYPE_RE.match(line) or CHARACTER_TYPE2_RE.match(line)
 
     @staticmethod
     def prune(line, words):
-        m = CHARACTER_TYPE_RE.match(line)
+        m = CHARACTER_TYPE_RE.match(line) or CHARACTER_TYPE2_RE.match(line)
         chartype = m.group(1)
         desc = m.group(2)
         if chartype == "vowel(s)":

@@ -9,10 +9,10 @@ def base26(word):
     table = string.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ","0123456789ABCDEFGHIJKLMNOP")
     return int(word.translate(table), 26)
 
-RANGE_RE = re.compile(r"between (\d*) and (\d*) \(inclusive\)")
+RANGE_RE = re.compile(r"between (\d*) and (\d*) \(inclusive\)( times)?")
 PERCENTAGE_RE = re.compile(r"exactly (.*)% of the letters")
 PERCENT_RANGE_RE = re.compile(r"between (.*)% and (.*)% \(inclusive\) of the letters")
-EXACT_RE = re.compile(r"(\d*) letters")
+EXACT_RE = re.compile(r"(\d*) (letters|points)")
 def value_matches(description, value, wordlen):
     """Returns True if value fits the provided description string.
 
