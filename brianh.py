@@ -391,6 +391,19 @@ WORD_SETS = {
         "ZW"]
 }
 
+
+def best(word, wordset):
+    currentIndex = 0
+    while (currentIndex < len(word)):
+        matches = [target for target in wordset if word[currentIndex:].startswith(target)]
+        if len(matches) > 0:
+            bestScore = 0
+            return max([len(match) + best(word[currentIndex + len(match):], wordset) for match in matches])
+        else:
+            currentIndex += 1
+    return 0
+
+
 class NonoverlappingHandler(object):
     @staticmethod
     def matches(line):
@@ -404,16 +417,6 @@ class NonoverlappingHandler(object):
         wordSetName = NONOVERLAPPING_RE.match(line).group(1)
         desc = NONOVERLAPPING_RE.match(line).group(2)
         wordSet = WORD_SETS[wordSetName]
-        def best(word, wordset):
-            currentIndex = 0
-            while (currentIndex < len(word)):
-                matches = [target for target in wordset if word[currentIndex:].startswith(target)]
-                if len(matches) > 0:
-                    bestScore = 0
-                    return max([len(match) + best(word[currentIndex + len(match):], wordset) for match in matches])
-                else:
-                    currentIndex += 1
-            return 0
         words = [word for word in words
                  if util.value_matches(desc, best(word.upper(), wordSet), len(word))]
         return words

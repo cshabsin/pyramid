@@ -99,6 +99,19 @@ class EndsWithHandler(object):
         return words
 
 
+STARTSWITH_RE = re.compile(r"Starts with: (.*)")
+class StartsWithHandler(object):
+    @staticmethod
+    def matches(line):
+        return STARTSWITH_RE.match(line)
+
+    @staticmethod
+    def prune(line, words):
+        val = STARTSWITH_RE.match(line).group(1)
+        words = [word for word in words if word.upper().startswith(val)]
+        return words
+
+
 DOUBLED_LETTER_RE = re.compile(r"Contains at least one doubled letter: (.*)")
 class DoubledLetterHandler(object):
     @staticmethod
@@ -118,15 +131,16 @@ class DoubledLetterHandler(object):
 
 
 CHARACTER_TYPE_RE = re.compile(r"Most common (.*) each account\(s\) for: (.*)")
+CHARACTER_TYPE2_RE = re.compile(r"Most common (.*) each appear\(s\): (.*)")
 
 class CharacterTypeHandler(object):
     @staticmethod
     def matches(line):
-        return CHARACTER_TYPE_RE.match(line)
+        return CHARACTER_TYPE_RE.match(line) or CHARACTER_TYPE2_RE.match(line)
 
     @staticmethod
     def prune(line, words):
-        m = CHARACTER_TYPE_RE.match(line)
+        m = CHARACTER_TYPE_RE.match(line) or CHARACTER_TYPE2_RE.match(line)
         chartype = m.group(1)
         desc = m.group(2)
         if chartype == "vowel(s)":
@@ -152,7 +166,7 @@ class CharacterTypeHandler(object):
 
 
 ALL_HANDLERS = {
-    1: [LengthHandler, StartVowelHandler, EndsWithHandler],
+    1: [LengthHandler, StartVowelHandler, EndsWithHandler, StartsWithHandler],
     2: [VowelHandler],
     3: [SumLetterHandler],
     10: [DoubledLetterHandler, CharacterTypeHandler]

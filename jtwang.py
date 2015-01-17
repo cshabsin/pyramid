@@ -1,7 +1,8 @@
+import anagram
 import re
 import util
 
-SHA1_RE = re.compile(r"SHA-1 hash of lowercased word, expressed in hexadecimal, (contains|starts with): (\S+)")
+SHA1_RE = re.compile(r"SHA-1 hash of lowercased word, expressed in hexadecimal, (contains|starts with|ends with): (\S+)")
 class SHA1Handler(object):
     @staticmethod
     def matches(rule):
@@ -17,7 +18,9 @@ class SHA1Handler(object):
         if m.group(1) == "contains":
             return [word for word in words if hashlib.sha1(word.lower()).hexdigest().find(sha1) != -1]
         elif m.group(1) == "starts with":
-            return [w for w in words if hashlib.sha1(w.lower()).hexdigest().find(sha1) == 0]
+            return [w for w in words if hashlib.sha1(w.lower()).hexdigest().startswith(sha1)]
+        elif m.group(1) == "ends with":
+            return [w for w in words if hashlib.sha1(w.lower()).hexdigest().endswith(sha1)]
 
 B26DIV_RE = re.compile(r"Word interpreted as a base 26 number \(A=0, B=1, etc\) is divisible by (\d): (\w+)")
 class B26DivisibleHandler(object):
@@ -103,7 +106,6 @@ class AnagramHandler(object):
 
     @staticmethod
     def prune(rule, words):
-        import anagram
         m = ANAGRAM_RE.match(rule)
         if m.group(1) == "YES":
             truth = True
@@ -119,7 +121,6 @@ class AnagramFuzzHandler(object):
 
     @staticmethod
     def prune(rule, words):
-        import anagram
         m = ANAGRAM_FUZZ_RE.match(rule)
         if m.group(3) == "YES":
             truth = True
