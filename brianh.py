@@ -10,7 +10,7 @@ class QwertyHandler(object):
     @staticmethod
     def prune(line, words):
 		location = QWERTY_RE.match(line).group(1)
-		val = QWERTY_RE.match(line).group(2)
+		desc = QWERTY_RE.match(line).group(2)
 		if location == "top":
 			matchLetters = "QWERTYUIOP"
 		if location == "middle":
@@ -18,8 +18,9 @@ class QwertyHandler(object):
 		if location == "bottom":
 			matchLetters = "ZXCVBNM"
 		def matchCount(word, matchLetters):
-			return len([letter for letter in list(word.upper()) if (letter in matchLetters)])
-		words = [word for word in words if (matchCount(word, matchLetters) == int(val))];
+			return sum([1 for letter in word.upper() if letter in matchLetters])
+		words = [word for word in words 
+				 if util.value_matches(desc, matchCount(word, matchLetters), len(word))]
 		return words
 
 
