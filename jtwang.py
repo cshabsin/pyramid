@@ -1,3 +1,4 @@
+import anagram
 import re
 import util
 
@@ -100,7 +101,6 @@ class AnagramHandler(object):
 
     @staticmethod
     def prune(rule, words):
-        import anagram
         m = ANAGRAM_RE.match(rule)
         if m.group(1) == "YES":
             truth = True
@@ -116,7 +116,6 @@ class AnagramFuzzHandler(object):
 
     @staticmethod
     def prune(rule, words):
-        import anagram
         m = ANAGRAM_FUZZ_RE.match(rule)
         if m.group(3) == "YES":
             truth = True
