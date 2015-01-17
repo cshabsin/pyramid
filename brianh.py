@@ -27,7 +27,11 @@ NONOVERLAPPING_RE = re.compile(r"If you marked nonoverlapping (.*), you could ma
 class NonoverlappingHandler(object):
     @staticmethod
     def matches(line):
-        return NONOVERLAPPING_RE.match(line)
+        m = NONOVERLAPPING_RE.match(line)
+        if not m: return False
+        wordSetName = NONOVERLAPPING_RE.match(line).group(1)
+        return wordSetName in ["US state postal abbreviations",
+                               "chemical element symbols (atomic number 112 or below)"]
         
     @staticmethod
     def prune(line, words):
