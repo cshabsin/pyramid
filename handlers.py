@@ -42,3 +42,7 @@ ALL_HANDLERS[10] = [ScrabbleHandler]
 for d in (cshabsin.ALL_HANDLERS, jtwang.ALL_HANDLERS, brianh.ALL_HANDLERS):
     for (priority, handlers) in d.iteritems():
         ALL_HANDLERS[priority].extend(handlers)
+
+# no properties implemented yet
+#import properties
+#ALL_HANDLERS[200].append(properties.PropertyHandler)
