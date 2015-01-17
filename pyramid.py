@@ -11,9 +11,9 @@ filename = sys.argv[1]
 with open(filename, 'r') as rulefile:
     rules = [line.strip() for line in rulefile]
 
-for (priority, handlers) in sorted(handlers.ALL_HANDLERS.items()):
+for (priority, handler_list) in sorted(handlers.ALL_HANDLERS.items()):
     # try each handler on the rules
-    for h in handlers:
+    for h in handler_list:
         delInx = []
         for inx in xrange(len(rules)):
             rule = rules[inx]

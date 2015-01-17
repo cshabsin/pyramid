@@ -12,7 +12,7 @@ def base26(word):
 RANGE_RE = re.compile(r"between (\d*) and (\d*) \(inclusive\)( times)?")
 PERCENTAGE_RE = re.compile(r"exactly (.*)% of the letters")
 PERCENT_RANGE_RE = re.compile(r"between (.*)% and (.*)% \(inclusive\) of the letters")
-EXACT_RE = re.compile(r"(\d*) (letters|points)")
+EXACT_RE = re.compile(r"(\d*) (letters|points|times?)")
 def value_matches(description, value, wordlen):
     """Returns True if value fits the provided description string.
 
