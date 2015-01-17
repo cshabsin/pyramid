@@ -12,6 +12,7 @@ def base26(word):
 RANGE_RE = re.compile(r"between (\d*) and (\d*) \(inclusive\)")
 PERCENTAGE_RE = re.compile(r"exactly (.*)% of the letters")
 PERCENT_RANGE_RE = re.compile(r"between (.*)% and (.*)% \(inclusive\) of the letters")
+EXACT_RE = re.compile(r"(\d*) letters")
 def value_matches(description, value, wordlen):
     """Returns True if value fits the provided description string.
 
@@ -25,6 +26,7 @@ def value_matches(description, value, wordlen):
       wordlen: The length of the word, for use in calculating percentages.
 
     Returns: True if the value fits."""
+    
     ran = RANGE_RE.match(description)
     if ran:
         low = int(ran.group(1))
@@ -45,4 +47,8 @@ def value_matches(description, value, wordlen):
         pct = float(value) * 100 / wordlen
         return pct >= low and pct <= high
 
+    exact = EXACT_RE.match(description)
+    if exact:
+        return value == int(exact.group(1))
+        
     return value == int(description)

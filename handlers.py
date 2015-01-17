@@ -38,4 +38,4 @@ ALL_HANDLERS = (
     [ScrabbleHandler, ContainsHandler] +
     cshabsin.ALL_HANDLERS +
     jtwang.ALL_HANDLERS +
-	brianh.ALL_HANDLERS)
+    brianh.ALL_HANDLERS)
