@@ -29,6 +29,8 @@ class PropertyHandler(object):
     @staticmethod
     def matches(rule):
         m = PROPERTY_RE.match(rule)
+        if not m:
+            return False
         prop = m.group(1)
         if not PROPERTIES.get(prop, False):
             return False

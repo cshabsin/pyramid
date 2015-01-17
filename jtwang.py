@@ -69,9 +69,10 @@ class B26IntHandler(object):
     @staticmethod
     def prune(rule, words):
         m = B26INT_RE.match(rule)
-        truth = m.group(1) == "YES"
-
-        return [w for w in words if util.base26(w) <= 2**32-1]
+        if m.group(1) == "YES":
+            return [w for w in words if util.base26(w) <= 2**32-1]
+        else:
+            return [w for w in words if util.base26(w) > 2**32-1]
 
 DISTINCT_RE = re.compile(r"Distinct (consonants|vowels|letters): (.*)")
 class DistinctHandler(object):

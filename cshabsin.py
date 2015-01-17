@@ -128,7 +128,7 @@ class DoubledLetterHandler(object):
     @staticmethod
     def prune(line, words):
         want_has_double = DOUBLED_LETTER_RE.match(line).group(1) == "YES"
-        words = [word for word in words if has_double(word) == want_has_double]
+        words = [word for word in words if DoubledLetterHandler.has_double(word) == want_has_double]
         return words
 
 
