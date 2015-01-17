@@ -139,6 +139,7 @@ ALL_HANDLERS = {
     2: [SHA1Handler],
     3: [B26DivisibleHandler, B26FloatHandler, B26IntHandler],
     4: [DistinctHandler],
-    100: [AnagramHandler, AnagramFuzzHandler]
+    20: [AnagramHandler],
+    100: [AnagramFuzzHandler]
     }
 

@@ -423,5 +423,5 @@ class NonoverlappingHandler(object):
             
 ALL_HANDLERS = {
     11: [QwertyHandler],
-    99: [NonoverlappingHandler]
+    120: [NonoverlappingHandler]
     }
