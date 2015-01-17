@@ -1,0 +1,5 @@
+properties.out:
+grep -r -l 'word with property' row* | uniq | parallel -n 50 python pyramids.py > properties.out
+
+colors.out:
+grep -r -l 'with the color' row* | uniq | parallel -n 50 python pyramids.py > colors.out
