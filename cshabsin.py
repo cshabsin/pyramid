@@ -163,7 +163,7 @@ class CharacterTypeHandler(object):
             needle = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         if chartype == "consonant(s)":
             needle = "BCDFGHJKLMNPQRSTVWXYZ"
-        words = [word for word in words if util.value_matches(desc, most_common_count(word, needle),
+        words = [word for word in words if util.value_matches(desc, CharacterTypeHandler.most_common_count(word, needle),
                                                               len(word))]
         return words
     
