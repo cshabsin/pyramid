@@ -54,5 +54,7 @@ for rownum in xrange(125):
         if len(words) == 1:
             emit(words[0].upper() + ",")
         else:
+            if not words:
+                sys.stderr.write("No words found at (%d, %d)\n" % (rownum, colnum))
             emit(",")
   emit("\n")
