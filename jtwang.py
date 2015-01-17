@@ -67,8 +67,33 @@ class B26IntHandler(object):
 
         return [w for w in words if util.base26(w) < 2**32-1]
 
+DISTINCT_RE = re.compile(r"Distinct (consonants|vowels): (\d+)")
+class DistinctHandler(object):
+    vowels = set(['a','e','i','o','u'])
+
+    @staticmethod
+    def matches(rule):
+        return DISTINCT_RE.match(rule)
+
+    @staticmethod
+    def distinct_consonants(word):
+        return set([c for c in word.lower() if c not in DistinctHandler.vowels])
+
+    @staticmethod
+    def distinct_vowels(word):
+        return set([c for c in word.lower() if c in DistinctHandler.vowels])
+    
+    @staticmethod
+    def prune(rule, words):
+        m = DISTINCT_RE.match(rule)
+        count = int(m.group(2))
+        if m.group(1) == "consonants":
+            return [w for w in words if len(DistinctHandler.distinct_consonants(w)) == count]
+        elif m.group(1) == "vowels":
+            return [w for w in words if len(DistinctHandler.distinct_vowels(w)) == count]
+
 if __name__ == "main":
     print "foo"
 
-ALL_HANDLERS = [SHA1Handler, B26DivisibleHandler, B26FloatHandler, B26IntHandler]
+ALL_HANDLERS = [SHA1Handler, B26DivisibleHandler, B26FloatHandler, B26IntHandler, DistinctHandler]
 

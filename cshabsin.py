@@ -86,7 +86,6 @@ class SumLetterHandler(object):
         raise Exception("Whoa")
                      
 
-
 ENDSWITH_RE = re.compile(r"Ends with: (.*)")
 class EndsWithHandler(object):
     @staticmethod
@@ -100,5 +99,23 @@ class EndsWithHandler(object):
         return words
 
 
+DOUBLED_LETTER_RE = re.compile(r"Contains at least one doubled letter: (.*)")
+class DoubledLetterHandler(object):
+    @staticmethod
+    def matches(line):
+        return DOUBLED_LETTER_RE.match(line)
+
+    @staticmethod
+    def prune(line, words):
+        want_has_double = DOUBLED_LETTER_RE.match(line).group(1) == "YES"
+        def has_double(word):
+            for code in range(65, 65+26):
+                if chr(code)+chr(code) in word.upper():
+                    return True
+            return False
+        words = [word for word in words if has_double(word) == want_has_double]
+        return words
+
+
 ALL_HANDLERS = [LengthHandler, StartVowelHandler, SumLetterHandler, EndsWithHandler,
-                VowelHandler]
+                VowelHandler, DoubledLetterHandler]
