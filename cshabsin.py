@@ -42,16 +42,13 @@ class StartVowelHandler(object):
 
 SUMLETTERDIV_RE = re.compile(
     r"Sum of letters \(A=1, B=2, etc\) is divisible by (\d*): (.*)")
-SUMLETTERRANGE_RE = re.compile(
-    r"Sum of letters \(A=1, B=2, etc\): between (\d*) and (\d*) \(inclusive\)")
 SUMLETTER_RE = re.compile(
-    r"Sum of letters \(A=1, B=2, etc\): (\d*)")
+    r"Sum of letters \(A=1, B=2, etc\): (.*)")
 class SumLetterHandler(object):
     @staticmethod
     def matches(line):
         return (
-            SUMLETTERDIV_RE.match(line) or SUMLETTERRANGE_RE.match(line) or
-            SUMLETTER_RE.match(line))
+            SUMLETTERDIV_RE.match(line) or SUMLETTER_RE.match(line))
 
     @staticmethod
     def prune(line, words):
@@ -63,18 +60,11 @@ class SumLetterHandler(object):
                      if (util.sum_of_letters_a1(word)%modulo == 0) == is_divisible]
             return words
 
-        m = SUMLETTERRANGE_RE.match(line)
-        if m:
-            low = int(m.group(1))
-            high = int(m.group(2))
-            words = [word for word in words
-                     if util.sum_of_letters_a1(word) >= low and util.sum_of_letters_a1(word) <= high]
-            return words
-        
         m = SUMLETTER_RE.match(line)
         if m:
-            val = int(m.group(1))
-            words = [word for word in words if util.sum_of_letters_a1(word) == val]
+            words = [word for word in words
+                     if util.value_matches(
+                             m.group(1), util.sum_of_letters_a1(word), len(word))]
             return words
 
         raise Exception("Whoa")
