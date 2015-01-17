@@ -73,7 +73,7 @@ class B26IntHandler(object):
 
         return [w for w in words if util.base26(w) <= 2**32-1]
 
-DISTINCT_RE = re.compile(r"Distinct (consonants|vowels): (\d+)")
+DISTINCT_RE = re.compile(r"Distinct (consonants|vowels|letters): (.*)")
 class DistinctHandler(object):
     vowels = set(['a','e','i','o','u'])
 
@@ -83,20 +83,29 @@ class DistinctHandler(object):
 
     @staticmethod
     def distinct_consonants(word):
-        return set([c for c in word.lower() if c not in DistinctHandler.vowels])
+        return set([c for c in word.upper() if c not in DistinctHandler.vowels])
 
     @staticmethod
     def distinct_vowels(word):
-        return set([c for c in word.lower() if c in DistinctHandler.vowels])
+        return set([c for c in word.upper() if c in DistinctHandler.vowels])
+
+    @staticmethod
+    def distinct_letters(word):
+        return set([c for c in word.upper()])
     
     @staticmethod
     def prune(rule, words):
         m = DISTINCT_RE.match(rule)
-        count = int(m.group(2))
+        condition = m.group(2)
         if m.group(1) == "consonants":
-            return [w for w in words if len(DistinctHandler.distinct_consonants(w)) == count]
+            return [w for w in words
+                    if util.value_matches(condition, len(DistinctHandler.distinct_consonants(w)), len(w))]
         elif m.group(1) == "vowels":
-            return [w for w in words if len(DistinctHandler.distinct_vowels(w)) == count]
+            return [w for w in words
+                    if util.value_matches(condition, len(DistinctHandler.distinct_vowels(w)), len(w))]
+        elif m.group(1) == "letters":
+            return [w for w in words
+                    if util.value_matches(condition, len(DistinctHandler.distinct_letters(w)), len(w))]
 
 ANAGRAM_RE = re.compile(r"Has at least one anagram that is also in the word list: (\w+)")
 class AnagramHandler(object):
