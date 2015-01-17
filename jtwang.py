@@ -75,7 +75,7 @@ class B26IntHandler(object):
 
 DISTINCT_RE = re.compile(r"Distinct (consonants|vowels|letters): (.*)")
 class DistinctHandler(object):
-    vowels = set(['a','e','i','o','u'])
+    vowels = set(['A','E','I','O','U'])
 
     @staticmethod
     def matches(rule):
@@ -83,15 +83,15 @@ class DistinctHandler(object):
 
     @staticmethod
     def distinct_consonants(word):
-        return set([c for c in word.lower() if c not in DistinctHandler.vowels])
+        return set([c for c in word.upper() if c not in DistinctHandler.vowels])
 
     @staticmethod
     def distinct_vowels(word):
-        return set([c for c in word.lower() if c in DistinctHandler.vowels])
+        return set([c for c in word.upper() if c in DistinctHandler.vowels])
 
     @staticmethod
     def distinct_letters(word):
-        return set([c for c in word.lower()])
+        return set([c for c in word.upper()])
     
     @staticmethod
     def prune(rule, words):

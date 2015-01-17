@@ -119,13 +119,15 @@ class DoubledLetterHandler(object):
         return DOUBLED_LETTER_RE.match(line)
 
     @staticmethod
+    def has_double(word):
+        for code in range(65, 65+26):
+            if chr(code)+chr(code) in word.upper():
+                return True
+        return False
+
+    @staticmethod
     def prune(line, words):
         want_has_double = DOUBLED_LETTER_RE.match(line).group(1) == "YES"
-        def has_double(word):
-            for code in range(65, 65+26):
-                if chr(code)+chr(code) in word.upper():
-                    return True
-            return False
         words = [word for word in words if has_double(word) == want_has_double]
         return words
 
@@ -139,6 +141,18 @@ class CharacterTypeHandler(object):
         return CHARACTER_TYPE_RE.match(line) or CHARACTER_TYPE2_RE.match(line)
 
     @staticmethod
+    def most_common_count(word, needle):
+        d = {}
+        most_common = 0
+        for c in word:
+            if c.upper() not in needle:
+                continue
+            d[c] = d.get(c, 0) + 1
+            if d[c] > most_common:
+                most_common = d[c]
+        return most_common
+
+    @staticmethod
     def prune(line, words):
         m = CHARACTER_TYPE_RE.match(line) or CHARACTER_TYPE2_RE.match(line)
         chartype = m.group(1)
@@ -149,17 +163,7 @@ class CharacterTypeHandler(object):
             needle = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         if chartype == "consonant(s)":
             needle = "BCDFGHJKLMNPQRSTVWXYZ"
-        def most_common_count(word):
-            d = {}
-            most_common = 0
-            for c in word:
-                if c.upper() not in needle:
-                    continue
-                d[c] = d.get(c, 0) + 1
-                if d[c] > most_common:
-                    most_common = d[c]
-            return most_common
-        words = [word for word in words if util.value_matches(desc, most_common_count(word),
+        words = [word for word in words if util.value_matches(desc, most_common_count(word, needle),
                                                               len(word))]
         return words
     
