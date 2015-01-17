@@ -1,7 +1,7 @@
 import re
 import util
 
-SHA1_RE = re.compile(r"SHA-1 hash of lowercased word, expressed in hexadecimal, contains: (\S+)")
+SHA1_RE = re.compile(r"SHA-1 hash of lowercased word, expressed in hexadecimal, (contains|starts with): (\S+)")
 class SHA1Handler(object):
     @staticmethod
     def matches(rule):
@@ -9,12 +9,15 @@ class SHA1Handler(object):
 
     @staticmethod
     def prune(rule, words):
-        sha1 = SHA1_RE.match(rule).group(1)
+        m = SHA1_RE.match(rule)
+        sha1 = m.group(2)
         sha1 = sha1.lower()
-        
+
         import hashlib
-        words = [word for word in words if hashlib.sha1(word.lower()).hexdigest().find(sha1) != -1]
-        return words
+        if m.group(1) == "contains":
+            return [word for word in words if hashlib.sha1(word.lower()).hexdigest().find(sha1) != -1]
+        elif m.group(1) == "starts with":
+            return [w for w in words if hashlib.sha1(w.lower()).hexdigest().find(sha1) == 0]
 
 B26DIV_RE = re.compile(r"Word interpreted as a base 26 number \(A=0, B=1, etc\) is divisible by (\d): (\w+)")
 class B26DivisibleHandler(object):
