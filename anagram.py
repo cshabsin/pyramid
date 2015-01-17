@@ -17,6 +17,7 @@ class AnagramDB(object):
         for w in wordlist:
             c = AnagramDB.charcount(w)
             AnagramDB._charcounts[c].append(w)
+        AnagramDB._charmatrix = np.matrix(AnagramDB._charcounts.keys())
 
     @staticmethod
     def hasAnagram(word):
@@ -29,11 +30,10 @@ class AnagramDB(object):
         """
         c = AnagramDB.charcount(word)
         ref = np.array(c)
-        for k in AnagramDB._charcounts.iterkeys():
-            diff = np.array(k) - ref
-            if np.all(diff >= 0) and np.sum(diff) == 1:
-                return True
-        return False
+        mDiff = AnagramDB._charmatrix - ref
+        gt = np.all(mDiff >= 0, 1)
+        sm = np.sum(mDiff, 1) == 1
+        return np.any(gt & sm)
 
     @staticmethod
     def hasAnagramPlusTwo(word):
@@ -41,8 +41,7 @@ class AnagramDB(object):
         """
         c = AnagramDB.charcount(word)
         ref = np.array(c)
-        for k in AnagramDB._charcounts.iterkeys():
-            diff = np.array(k) - ref
-            if np.all(diff >= 0) and np.sum(diff) == 2:
-                return True
-        return False
+        mDiff = AnagramDB._charmatrix - ref
+        gt = np.all(mDiff >= 0, 1)
+        sm = np.sum(mDiff, 1) == 2
+        return np.any(gt & sm)
