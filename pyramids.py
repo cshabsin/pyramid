@@ -1,6 +1,7 @@
 import sys
 import handlers
 import anagram
+import caesar
 
 __WORDS = []
 with open("words.txt", "r") as wordfile:
@@ -32,6 +33,7 @@ def runPyramid(filename):
         print words
 
 anagram.AnagramDB.init(__WORDS)
+caesar.CaesarHandler.init(__WORDS)
 
 for filename in sys.argv[1:]:
     print "=== %s ===" % filename
