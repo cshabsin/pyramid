@@ -99,6 +99,19 @@ class EndsWithHandler(object):
         return words
 
 
+STARTSWITH_RE = re.compile(r"Starts with: (.*)")
+class StartsWithHandler(object):
+    @staticmethod
+    def matches(line):
+        return STARTSWITH_RE.match(line)
+
+    @staticmethod
+    def prune(line, words):
+        val = STARTSWITH_RE.match(line).group(1)
+        words = [word for word in words if word.upper().startswith(val)]
+        return words
+
+
 DOUBLED_LETTER_RE = re.compile(r"Contains at least one doubled letter: (.*)")
 class DoubledLetterHandler(object):
     @staticmethod
@@ -153,4 +166,4 @@ class CharacterTypeHandler(object):
 
 
 ALL_HANDLERS = [LengthHandler, StartVowelHandler, SumLetterHandler, EndsWithHandler,
-                VowelHandler, DoubledLetterHandler, CharacterTypeHandler]
+                StartsWithHandler, VowelHandler, DoubledLetterHandler, CharacterTypeHandler]
