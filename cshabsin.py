@@ -40,6 +40,22 @@ class StartVowelHandler(object):
         return words
 
 
+VOWEL_RE = re.compile(r"Vowels: (.*)")
+class VowelHandler(object):
+    @staticmethod
+    def matches(line):
+        return VOWEL_RE.match(line)
+
+    @staticmethod
+    def prune(line, words):
+        desc = VOWEL_RE.match(line).group(1)
+        def num_vowels(word):
+            return sum([1 for c in word if c.upper() in "AEIOU"])
+        words = [word for word in words
+                 if util.value_matches(desc, num_vowels(word), len(word))]
+        return words
+
+
 SUMLETTERDIV_RE = re.compile(
     r"Sum of letters \(A=1, B=2, etc\) is divisible by (\d*): (.*)")
 SUMLETTER_RE = re.compile(
@@ -84,4 +100,5 @@ class EndsWithHandler(object):
         return words
 
 
-ALL_HANDLERS = [LengthHandler, StartVowelHandler, SumLetterHandler, EndsWithHandler]
+ALL_HANDLERS = [LengthHandler, StartVowelHandler, SumLetterHandler, EndsWithHandler,
+                VowelHandler]

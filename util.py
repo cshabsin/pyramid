@@ -38,6 +38,7 @@ def value_matches(description, value, wordlen):
     if percent_range:
         low = float(percent_range.group(1))
         high = float(percent_range.group(2))
-        return value >= low and value <= high
+        pct = float(value) * 100 / wordlen
+        return pct >= low and pct <= high
 
     return value == int(description)
