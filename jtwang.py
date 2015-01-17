@@ -65,7 +65,7 @@ class B26IntHandler(object):
         m = B26INT_RE.match(rule)
         truth = m.group(1) == "YES"
 
-        return [w for w in words if util.base26(w) < 2**32-1]
+        return [w for w in words if util.base26(w) <= 2**32-1]
 
 DISTINCT_RE = re.compile(r"Distinct (consonants|vowels): (\d+)")
 class DistinctHandler(object):
