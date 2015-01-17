@@ -1,4 +1,5 @@
 import re
+import cshabsin
 
 scrabble_re = re.compile(r"Base Scrabble score: (\d*) points")
 SCRABBLE_VALS = [1, 3, 3, 2, 1, 4, 2, 4, 1, 8,
@@ -17,4 +18,4 @@ class ScrabbleHandler(object):
         words = [word for word in words if scrabble_score(word) == score]
         return words
 
-ALL_HANDLERS = [ScrabbleHandler]
+ALL_HANDLERS = [ScrabbleHandler] + cshabsin.ALL_HANDLERS
