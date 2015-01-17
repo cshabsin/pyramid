@@ -56,7 +56,7 @@ class B26FloatHandler(object):
         ret = []
         for w in words:
             b26 = util.base26(w)
-            if nfunc(b26) == b26:
+            if (int(nfunc(b26)) == b26) == truth:
                 ret.append(w)
         return ret
         
