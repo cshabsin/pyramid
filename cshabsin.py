@@ -117,5 +117,37 @@ class DoubledLetterHandler(object):
         return words
 
 
+CHARACTER_TYPE_RE = re.compile(r"Most common (.*) each account\(s\) for: (.*)")
+
+class CharacterTypeHandler(object):
+    @staticmethod
+    def matches(line):
+        return CHARACTER_TYPE_RE.match(line)
+
+    @staticmethod
+    def prune(line, words):
+        m = CHARACTER_TYPE_RE.match(line)
+        chartype = m.group(1)
+        desc = m.group(2)
+        if chartype == "vowel(s)":
+            needle = "AEIOU"
+        if chartype == "letter(s)":
+            needle = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        if chartype == "consonant(s)":
+            needle = "BCDFGHJKLMNPQRSTVWXYZ"
+        def most_common_count(word):
+            d = {}
+            most_common = 0
+            for c in word:
+                d[c] = d.get(c, 0) + 1
+                if d[c] > most_common:
+                    most_common = d[c]
+            return most_common
+        words = [word for word in words if util.value_matches(desc, most_common_count(word),
+                                                              len(word))]
+        return words
+    
+
+
 ALL_HANDLERS = [LengthHandler, StartVowelHandler, SumLetterHandler, EndsWithHandler,
-                VowelHandler, DoubledLetterHandler]
+                VowelHandler, DoubledLetterHandler, CharacterTypeHandler]
