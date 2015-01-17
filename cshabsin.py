@@ -139,6 +139,8 @@ class CharacterTypeHandler(object):
             d = {}
             most_common = 0
             for c in word:
+                if c.upper() not in needle:
+                    continue
                 d[c] = d.get(c, 0) + 1
                 if d[c] > most_common:
                     most_common = d[c]
