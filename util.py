@@ -34,7 +34,7 @@ def value_matches(description, value, wordlen):
     percentage = PERCENTAGE_RE.match(description)
     if percentage:
         pct = float(percentage.group(1))
-        if 0.1 > abs(pct - value / wordlen):
+        if 0.1 > abs(pct - value * 100 / wordlen):
             return True
         return False
     
