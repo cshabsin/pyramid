@@ -1,6 +1,7 @@
 import re
 import cshabsin
 import jtwang
+import brianh
 
 SCRABBLE_RE = re.compile(r"Base Scrabble score: (\d*) points")
 SCRABBLE_VALS = [1, 3, 3, 2, 1, 4, 2, 4, 1, 8,
@@ -36,4 +37,5 @@ class ContainsHandler(object):
 ALL_HANDLERS = (
     [ScrabbleHandler, ContainsHandler] +
     cshabsin.ALL_HANDLERS +
-    jtwang.ALL_HANDLERS)
+    jtwang.ALL_HANDLERS +
+	brianh.ALL_HANDLERS)
