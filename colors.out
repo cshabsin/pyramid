@@ -7,10 +7,9 @@ This word is associated with the color NIUSERRE.
 This word is associated with the color SAQQARA.
 ['blood']
 === row79/row79_col48.txt ===
-Has property QAKAREIBI: YES
 
 This word is associated with the color USERKAF.
-['acceptable', 'bright', 'cheeking', 'chirks', 'chomped', 'clamper', 'clinched', 'deceivable', 'delegacy', 'englobed', 'flaming', 'flinder', 'hackler', 'hangars', 'limbered', 'magnified', 'placarded']
+['bright']
 === row80/row80_col92.txt ===
 
 This word is associated with the color KHAFRA.
@@ -23,7 +22,7 @@ This word is associated with the color SAQQARA.
 If you marked nonoverlapping occurrences of words in the word list that are 3 or fewer letters long, you could mark at most: 6 letters
 
 This word is associated with the color MERIKARE.
-[]
+['tipping']
 === row83/row83_col105.txt ===
 
 This is NOT a word with property DJOSER.
@@ -42,19 +41,17 @@ This word is associated with the color KHENDJER.
 This word is associated with the color KHENDJER.
 ['flower']
 === row95/row95_col87.txt ===
-Has property AMENYQEMAU: YES
 
 This word is associated with the color DAHSHUR.
-['brawl', 'bulbar', 'catered', 'danging', 'dashes', 'edibles', 'keeler', 'leafier', 'redfin', 'shades']
+['shades']
 === row97/row97_col27.txt ===
 
 This word is associated with the color TETI.
 ['royalty']
 === row98/row98_col27.txt ===
-Has property QAKAREIBI: YES
 
 This word is associated with the color AHMOSE.
-['agog', 'ajar', 'asia', 'baby', 'duad', 'leal', 'raja']
+['baby']
 === row99/row99_col24.txt ===
 
 This word is associated with the color SNEFERU.
@@ -89,10 +86,9 @@ This word is associated with the color KHABA.
 This word is associated with the color DJEDEFRE.
 ['physics']
 === row106/row106_col50.txt ===
-Has property MEIDUM: YES
 
 This word is associated with the color KHAFRA.
-['tic', 'tide', 'tie', 'tied']
+['tic']
 === row107/row107_col75.txt ===
 
 This word is associated with the color DAHSHUR.
@@ -174,7 +170,7 @@ This word is associated with the color KHABA.
 === row19/row19_col88.txt ===
 
 This word is associated with the color SAQQARA.
-['carding']
+['cardinal']
 === row23/row23_col86.txt ===
 
 This word is associated with the color GIZA.
