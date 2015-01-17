@@ -1,9 +1,12 @@
 import sys
 import handlers
+import anagram
 
 with open("words.txt", "r") as wordfile:
     words = [line.strip() for line in wordfile]
 
+anagram.AnagramDB.init(words)
+    
 filename = sys.argv[1]
 f = open(filename, "r")
 for line in f:

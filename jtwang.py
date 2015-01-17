@@ -92,8 +92,44 @@ class DistinctHandler(object):
         elif m.group(1) == "vowels":
             return [w for w in words if len(DistinctHandler.distinct_vowels(w)) == count]
 
+ANAGRAM_RE = re.compile(r"Has at least one anagram that is also in the word list: (\w+)")
+class AnagramHandler(object):
+    @staticmethod
+    def matches(rule):
+        return ANAGRAM_RE.match(rule)
+
+    @staticmethod
+    def prune(rule, words):
+        import anagram
+        m = ANAGRAM_RE.match(rule)
+        if m.group(1) == "YES":
+            truth = True
+        else:
+            truth = False
+        return [w for w in words if anagram.AnagramDB.hasAnagram(w) is truth]
+        
+ANAGRAM_FUZZ_RE = re.compile(r"Can be combined with (one|two) additional (letter|letters) to produce an anagram of something in the word list: (\w+)")
+class AnagramFuzzHandler(object):
+    @staticmethod
+    def matches(rule):
+        return ANAGRAM_FUZZ_RE.match(rule)
+
+    @staticmethod
+    def prune(rule, words):
+        import anagram
+        m = ANAGRAM_FUZZ_RE.match(rule)
+        if m.group(3) == "YES":
+            truth = True
+        else:
+            truth = False
+
+        if m.group(1) == "one":
+            return [w for w in words if anagram.AnagramDB.hasAnagramPlusOne(w) is truth]
+        elif m.group(1) == "two":
+            return [w for w in words if anagram.AnagramDB.hasAnagramPlusTwo(w) is truth]
+        
 if __name__ == "main":
     print "foo"
 
-ALL_HANDLERS = [SHA1Handler, B26DivisibleHandler, B26FloatHandler, B26IntHandler, DistinctHandler]
+ALL_HANDLERS = [SHA1Handler, B26DivisibleHandler, B26FloatHandler, B26IntHandler, DistinctHandler, AnagramHandler, AnagramFuzzHandler]
 
