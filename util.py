@@ -1,9 +1,13 @@
 import re
-
+import string
 
 def sum_of_letters_a1(word):
     return sum([ord(c.upper())-64 for c in word])
 
+def base26(word):
+    word = word.upper()
+    table = string.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ","0123456789ABCDEFGHIJKLMNOP")
+    return int(word.translate(table), 26)
 
 RANGE_RE = re.compile(r"between (\d*) and (\d*) \(inclusive\)")
 PERCENTAGE_RE = re.compile(r"exactly (.*)% of the letters")
@@ -38,6 +42,7 @@ def value_matches(description, value, wordlen):
     if percent_range:
         low = float(percent_range.group(1))
         high = float(percent_range.group(2))
-        return value >= low and value <= high
+        pct = float(value) * 100 / wordlen
+        return pct >= low and pct <= high
 
     return value == int(description)

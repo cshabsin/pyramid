@@ -1,5 +1,74 @@
+import re
+import util
 
-ALL_HANDLERS = []
+SHA1_RE = re.compile(r"SHA-1 hash of lowercased word, expressed in hexadecimal, contains: (\S+)")
+class SHA1Handler(object):
+    @staticmethod
+    def matches(rule):
+        return SHA1_RE.match(rule)
+
+    @staticmethod
+    def prune(rule, words):
+        sha1 = SHA1_RE.match(rule).group(1)
+        sha1 = sha1.lower()
+        
+        import hashlib
+        words = [word for word in words if hashlib.sha1(word.lower()).hexdigest().find(sha1) != -1]
+        return words
+
+B26DIV_RE = re.compile(r"Word interpreted as a base 26 number \(A=0, B=1, etc\) is divisible by (\d): (\w+)")
+class B26DivisibleHandler(object):
+    @staticmethod
+    def matches(rule):
+        return B26DIV_RE.match(rule)
+
+    @staticmethod
+    def prune(rule, words):
+        m = B26DIV_RE.match(rule)
+        truth = m.group(2) == "YES"
+        div = int(m.group(1))
+        words = [word for word in words if (util.base26(word) % div == 0) is truth]
+        return words
+
+B26FLOAT_RE = re.compile(r"Word interpreted as a base 26 number \(A=0, B=1, etc\) is exactly representable in IEEE 754 (single|double)-precision floating point format: (\w+)")
+class B26FloatHandler(object):
+    @staticmethod
+    def matches(rule):
+        return B26FLOAT_RE.match(rule)
+
+    @staticmethod
+    def prune(rule, words):
+        m = B26FLOAT_RE.match(rule)
+        truth = m.group(2) == "YES"
+        import numpy
+
+        if m.group(1) == "double":
+            nfunc = numpy.float64
+        elif m.group(1) == "single":
+            nfunc = numpy.float32
+
+        ret = []
+        for w in words:
+            b26 = util.base26(w)
+            if nfunc(b26) == b26:
+                ret.append(w)
+        return ret
+        
+B26INT_RE = re.compile(r"Word interpreted as a base 26 number \(A=0, B=1, etc\) is representable as an unsigned 32-bit integer: (\w+)")
+class B26IntHandler(object):
+    @staticmethod
+    def matches(rule):
+        return B26INT_RE.match(rule)
+
+    @staticmethod
+    def prune(rule, words):
+        m = B26INT_RE.match(rule)
+        truth = m.group(1) == "YES"
+
+        return [w for w in words if util.base26(w) < 2**32-1]
 
 if __name__ == "main":
     print "foo"
+
+ALL_HANDLERS = [SHA1Handler, B26DivisibleHandler, B26FloatHandler, B26IntHandler]
+
