@@ -1,4 +1,3 @@
-import numpy as np
 from collections import Counter, defaultdict
 
 class AnagramDB(object):
@@ -28,10 +27,20 @@ class AnagramDB(object):
         """ has an anagram in word list when combined with one letter
         """
         c = AnagramDB.charcount(word)
-        ref = np.array(c)
         for k in AnagramDB._charcounts.iterkeys():
-            diff = np.array(k) - ref
-            if np.all(diff >= 0) and np.sum(diff) == 1:
+            diff_count = 0
+            valid = True
+            for i in range(26):
+                if c[i] == k[i]:
+                    continue
+                if c[i] < k[i]:
+                    valid = False
+                    break
+                diff_count += c[i] - k[i]
+                if diff_count > 1:
+                    valid = False
+                    break
+            if diff_count == 1:
                 return True
         return False
 
@@ -40,9 +49,19 @@ class AnagramDB(object):
         """ has an anagram in word list when combined with two letters
         """
         c = AnagramDB.charcount(word)
-        ref = np.array(c)
         for k in AnagramDB._charcounts.iterkeys():
-            diff = np.array(k) - ref
-            if np.all(diff >= 0) and np.sum(diff) == 2:
+            diff_count = 0
+            valid = True
+            for i in range(26):
+                if c[i] == k[i]:
+                    continue
+                if c[i] < k[i]:
+                    valid = False
+                    break
+                diff_count += c[i] - k[i]
+                if diff_count > 2:
+                    valid = False
+                    break
+            if diff_count == 2:
                 return True
         return False
