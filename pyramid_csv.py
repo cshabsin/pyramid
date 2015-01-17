@@ -25,11 +25,11 @@ def sorted_glob():
 output = open("output.csv", "w")
             
 def emit(output_str):
-    sys.stdout.write(output_str)
     output.write(output_str)
             
 for rownum in xrange(125):
   for colnum in xrange(142):
+    sys.stderr.write("(%d, %d)     \r" % (rownum, colnum))
     if previous[rownum][colnum]:
         emit(previous[rownum][colnum] + ",")
         continue
